@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retirement Financial Planner</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>💰 Retirement Financial Planner</h1>
+            <p class="subtitle">Plan your financial future with confidence</p>
+        </header>
+
+        <div class="main-content">
+            <div class="input-section">
+                <h2>Your Information</h2>
+
+                <div class="form-group">
+                    <label for="salary">Current Annual Salary</label>
+                    <div class="input-wrapper">
+                        <span class="currency">$</span>
+                        <input type="number" id="salary" placeholder="75000" value="75000" min="0" step="1000">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="currentAge">Current Age</label>
+                    <input type="number" id="currentAge" placeholder="30" value="30" min="18" max="100">
+                </div>
+
+                <div class="form-group">
+                    <label for="retirementAge">Retirement Age</label>
+                    <input type="number" id="retirementAge" placeholder="65" value="65" min="18" max="100">
+                </div>
+
+                <h3>Annual Contributions</h3>
+
+                <div class="form-group">
+                    <label for="contribution401k">401(k) Contribution</label>
+                    <div class="input-wrapper">
+                        <span class="currency">$</span>
+                        <input type="number" id="contribution401k" placeholder="10000" value="10000" min="0" step="500">
+                    </div>
+                    <small class="help-text">2025 limit: $23,500 (under 50), $31,000 (50+)</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="employerMatch">Employer 401(k) Match</label>
+                    <div class="input-wrapper">
+                        <span class="currency">$</span>
+                        <input type="number" id="employerMatch" placeholder="5000" value="5000" min="0" step="500">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="contributionRoth">Roth IRA Contribution</label>
+                    <div class="input-wrapper">
+                        <span class="currency">$</span>
+                        <input type="number" id="contributionRoth" placeholder="7000" value="7000" min="0" step="500">
+                    </div>
+                    <small class="help-text">2025 limit: $7,000 (under 50), $8,000 (50+)</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="contributionHSA">HSA Contribution</label>
+                    <div class="input-wrapper">
+                        <span class="currency">$</span>
+                        <input type="number" id="contributionHSA" placeholder="4150" value="4150" min="0" step="100">
+                    </div>
+                    <small class="help-text">2025 limit: $4,150 (individual), $8,300 (family)</small>
+                </div>
+
+                <h3>Investment Assumptions</h3>
+
+                <div class="form-group">
+                    <label for="returnRate">Average Annual Market Return (%)</label>
+                    <input type="number" id="returnRate" placeholder="8" value="8" min="0" max="30" step="0.5">
+                    <small class="help-text">Historical S&P 500 average: ~10%</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="inflationRate">Inflation Rate (%)</label>
+                    <input type="number" id="inflationRate" placeholder="3" value="3" min="0" max="20" step="0.1">
+                    <small class="help-text">Historical average: ~3%</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="currentBalance">Current Total Savings</label>
+                    <div class="input-wrapper">
+                        <span class="currency">$</span>
+                        <input type="number" id="currentBalance" placeholder="0" value="0" min="0" step="1000">
+                    </div>
+                </div>
+
+                <button class="calculate-btn" onclick="calculateRetirement()">Calculate My Retirement</button>
+            </div>
+
+            <div class="results-section">
+                <h2>Your Retirement Projection</h2>
+
+                <div class="summary-cards">
+                    <div class="card">
+                        <div class="card-label">Years Until Retirement</div>
+                        <div class="card-value" id="yearsToRetirement">35</div>
+                    </div>
+                    <div class="card highlight">
+                        <div class="card-label">Total at Retirement</div>
+                        <div class="card-value" id="totalAtRetirement">$0</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-label">Total Contributions</div>
+                        <div class="card-value" id="totalContributions">$0</div>
+                    </div>
+                    <div class="card success">
+                        <div class="card-label">Investment Gains</div>
+                        <div class="card-value" id="investmentGains">$0</div>
+                    </div>
+                </div>
+
+                <div class="breakdown">
+                    <h3>Account Breakdown at Retirement</h3>
+                    <div class="breakdown-item">
+                        <span class="breakdown-label">401(k) Balance:</span>
+                        <span class="breakdown-value" id="balance401k">$0</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span class="breakdown-label">Roth IRA Balance:</span>
+                        <span class="breakdown-value" id="balanceRoth">$0</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span class="breakdown-label">HSA Balance:</span>
+                        <span class="breakdown-value" id="balanceHSA">$0</span>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <h3>Growth Over Time</h3>
+                    <canvas id="retirementChart"></canvas>
+                </div>
+
+                <div class="purchasing-power">
+                    <h3>Inflation-Adjusted Value</h3>
+                    <p>Adjusted for inflation, your retirement savings will have the purchasing power of:</p>
+                    <div class="card info">
+                        <div class="card-label">In Today's Dollars</div>
+                        <div class="card-value" id="inflationAdjusted">$0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>This calculator provides estimates based on your inputs. Actual results may vary. Consult a financial advisor for personalized advice.</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
