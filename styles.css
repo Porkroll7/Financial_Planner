@@ -99,10 +99,12 @@ h3 {
     font-weight: 600;
     color: #667eea;
     font-size: 1.1rem;
+    pointer-events: none;
+    z-index: 1;
 }
 
 .input-wrapper input {
-    padding-left: 35px;
+    padding-left: 40px;
 }
 
 input[type="number"] {

@@ -126,11 +126,18 @@ function calculateRetirement() {
 
 // Create or update chart
 function createChart(yearlyData, currentAge) {
-    const ctx = document.getElementById('retirementChart').getContext('2d');
+    const canvas = document.getElementById('retirementChart');
+    if (!canvas) {
+        console.error('Chart canvas not found');
+        return;
+    }
+
+    const ctx = canvas.getContext('2d');
 
     // Destroy existing chart if it exists
     if (retirementChart) {
         retirementChart.destroy();
+        retirementChart = null;
     }
 
     const labels = yearlyData.map(d => (currentAge + d.year).toString());
@@ -249,6 +256,17 @@ function createChart(yearlyData, currentAge) {
 
 // Add real-time calculation on input change
 document.addEventListener('DOMContentLoaded', function() {
+    // Wait for Chart.js to load
+    if (typeof Chart === 'undefined') {
+        console.error('Chart.js library not loaded');
+        setTimeout(initializeCalculator, 100);
+        return;
+    }
+
+    initializeCalculator();
+});
+
+function initializeCalculator() {
     const inputs = document.querySelectorAll('input[type="number"]');
     inputs.forEach(input => {
         input.addEventListener('input', debounce(calculateRetirement, 500));
@@ -256,7 +274,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initial calculation
     calculateRetirement();
-});
+}
 
 // Debounce function to limit calculation frequency
 function debounce(func, wait) {
