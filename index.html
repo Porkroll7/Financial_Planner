@@ -19,11 +19,8 @@
                 <h2>Your Information</h2>
 
                 <div class="form-group">
-                    <label for="salary">Current Annual Salary</label>
-                    <div class="input-wrapper">
-                        <span class="currency">$</span>
-                        <input type="number" id="salary" placeholder="75000" value="75000" min="0" step="1000">
-                    </div>
+                    <label for="salary">Current Annual Salary ($)</label>
+                    <input type="number" id="salary" placeholder="75000" value="75000" min="0" step="1000">
                 </div>
 
                 <div class="form-group">
@@ -39,37 +36,25 @@
                 <h3>Annual Contributions</h3>
 
                 <div class="form-group">
-                    <label for="contribution401k">401(k) Contribution</label>
-                    <div class="input-wrapper">
-                        <span class="currency">$</span>
-                        <input type="number" id="contribution401k" placeholder="10000" value="10000" min="0" step="500">
-                    </div>
+                    <label for="contribution401k">401(k) Contribution ($)</label>
+                    <input type="number" id="contribution401k" placeholder="10000" value="10000" min="0" step="500">
                     <small class="help-text">2025 limit: $23,500 (under 50), $31,000 (50+)</small>
                 </div>
 
                 <div class="form-group">
-                    <label for="employerMatch">Employer 401(k) Match</label>
-                    <div class="input-wrapper">
-                        <span class="currency">$</span>
-                        <input type="number" id="employerMatch" placeholder="5000" value="5000" min="0" step="500">
-                    </div>
+                    <label for="employerMatch">Employer 401(k) Match ($)</label>
+                    <input type="number" id="employerMatch" placeholder="5000" value="5000" min="0" step="500">
                 </div>
 
                 <div class="form-group">
-                    <label for="contributionRoth">Roth IRA Contribution</label>
-                    <div class="input-wrapper">
-                        <span class="currency">$</span>
-                        <input type="number" id="contributionRoth" placeholder="7000" value="7000" min="0" step="500">
-                    </div>
+                    <label for="contributionRoth">Roth IRA Contribution ($)</label>
+                    <input type="number" id="contributionRoth" placeholder="7000" value="7000" min="0" step="500">
                     <small class="help-text">2025 limit: $7,000 (under 50), $8,000 (50+)</small>
                 </div>
 
                 <div class="form-group">
-                    <label for="contributionHSA">HSA Contribution</label>
-                    <div class="input-wrapper">
-                        <span class="currency">$</span>
-                        <input type="number" id="contributionHSA" placeholder="4150" value="4150" min="0" step="100">
-                    </div>
+                    <label for="contributionHSA">HSA Contribution ($)</label>
+                    <input type="number" id="contributionHSA" placeholder="4150" value="4150" min="0" step="100">
                     <small class="help-text">2025 limit: $4,150 (individual), $8,300 (family)</small>
                 </div>
 
@@ -88,14 +73,11 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="currentBalance">Current Total Savings</label>
-                    <div class="input-wrapper">
-                        <span class="currency">$</span>
-                        <input type="number" id="currentBalance" placeholder="0" value="0" min="0" step="1000">
-                    </div>
+                    <label for="currentBalance">Current Total Savings ($)</label>
+                    <input type="number" id="currentBalance" placeholder="0" value="0" min="0" step="1000">
                 </div>
 
-                <button class="calculate-btn" onclick="calculateRetirement()">Calculate My Retirement</button>
+                <button class="calculate-btn" id="calculateBtn">Calculate My Retirement</button>
             </div>
 
             <div class="results-section">

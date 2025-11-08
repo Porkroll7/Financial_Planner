@@ -87,26 +87,6 @@ h3 {
     font-size: 0.95rem;
 }
 
-.input-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-.input-wrapper .currency {
-    position: absolute;
-    left: 15px;
-    font-weight: 600;
-    color: #667eea;
-    font-size: 1.1rem;
-    pointer-events: none;
-    z-index: 1;
-}
-
-.input-wrapper input {
-    padding-left: 40px;
-}
-
 input[type="number"] {
     width: 100%;
     padding: 12px 15px;

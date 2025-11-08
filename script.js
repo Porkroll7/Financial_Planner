@@ -70,23 +70,39 @@ function calculateRetirement() {
     const total401kContribution = contribution401k + employerMatch;
     const totalAnnualContribution = total401kContribution + contributionRoth + contributionHSA;
 
+    // Distribute current balance proportionally to annual contributions
+    // This assumes your existing savings are distributed similarly to your contribution pattern
+    let balance401kPortion = 0, balanceRothPortion = 0, balanceHSAPortion = 0;
+
+    if (totalAnnualContribution > 0) {
+        // Split current balance based on contribution ratios
+        balance401kPortion = currentBalance * (total401kContribution / totalAnnualContribution);
+        balanceRothPortion = currentBalance * (contributionRoth / totalAnnualContribution);
+        balanceHSAPortion = currentBalance * (contributionHSA / totalAnnualContribution);
+    } else {
+        // If no contributions, assume typical distribution: 60% 401k, 30% Roth, 10% HSA
+        balance401kPortion = currentBalance * 0.6;
+        balanceRothPortion = currentBalance * 0.3;
+        balanceHSAPortion = currentBalance * 0.1;
+    }
+
     // Calculate separate account balances
     const balance401k = calculateFutureValue(
-        currentBalance * 0.6, // Assume 60% of current balance is in 401k
+        balance401kPortion,
         total401kContribution,
         returnRate,
         yearsToRetirement
     );
 
     const balanceRoth = calculateFutureValue(
-        currentBalance * 0.3, // Assume 30% of current balance is in Roth
+        balanceRothPortion,
         contributionRoth,
         returnRate,
         yearsToRetirement
     );
 
     const balanceHSA = calculateFutureValue(
-        currentBalance * 0.1, // Assume 10% of current balance is in HSA
+        balanceHSAPortion,
         contributionHSA,
         returnRate,
         yearsToRetirement
@@ -254,28 +270,6 @@ function createChart(yearlyData, currentAge) {
     });
 }
 
-// Add real-time calculation on input change
-document.addEventListener('DOMContentLoaded', function() {
-    // Wait for Chart.js to load
-    if (typeof Chart === 'undefined') {
-        console.error('Chart.js library not loaded');
-        setTimeout(initializeCalculator, 100);
-        return;
-    }
-
-    initializeCalculator();
-});
-
-function initializeCalculator() {
-    const inputs = document.querySelectorAll('input[type="number"]');
-    inputs.forEach(input => {
-        input.addEventListener('input', debounce(calculateRetirement, 500));
-    });
-
-    // Initial calculation
-    calculateRetirement();
-}
-
 // Debounce function to limit calculation frequency
 function debounce(func, wait) {
     let timeout;
@@ -287,4 +281,37 @@ function debounce(func, wait) {
         clearTimeout(timeout);
         timeout = setTimeout(later, wait);
     };
+}
+
+// Initialize the calculator when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    // Wait for Chart.js to load
+    if (typeof Chart === 'undefined') {
+        console.error('Chart.js library not loaded, retrying...');
+        setTimeout(initializeCalculator, 100);
+        return;
+    }
+
+    initializeCalculator();
+});
+
+function initializeCalculator() {
+    // Add real-time calculation on any input change
+    const inputs = document.querySelectorAll('input[type="number"]');
+    const debouncedCalculate = debounce(calculateRetirement, 300);
+
+    inputs.forEach(input => {
+        input.addEventListener('input', debouncedCalculate);
+    });
+
+    // Add click event listener to calculate button
+    const calculateBtn = document.getElementById('calculateBtn');
+    if (calculateBtn) {
+        calculateBtn.addEventListener('click', function() {
+            calculateRetirement();
+        });
+    }
+
+    // Perform initial calculation on page load
+    calculateRetirement();
 }
